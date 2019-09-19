@@ -4,7 +4,7 @@ import Contact from "./Contact";
 import PropTypes from "prop-types";
 // To access the state inside components we need to bring in something called "connect" from react-redux
 import { connect } from "react-redux"; // react-redux takes care of connecting react to redux
-import { GET_CONTACTS } from "../../actions/types";
+import { getContacts } from "../../actions/contactActions";
 
 class Contacts extends Component {
   // "getContacts" should be called when the component is mounted
@@ -42,16 +42,12 @@ const mapStateToProps = state => ({
   contacts: state.contact.contacts
 });
 
-// if we want to fire off an action: to call "GET_CONTACTS" so that we can get the "initial contacts" we need to create a variable
-const mapDispatchToProps = dispatch => ({
-  getContacts: () => dispatch({ type: GET_CONTACTS })
-});
-
 // In order to use "connect" we need instead of exporting the component directly we need to explore "connect" (put parentheses) and then wrap the component name in parentheses.
 // Now inside the "connect" parameters we put two things:
-// * first is anything that we want to map from the redux state to props in the component
-// * second is any action that we want to dispatch
+
 export default connect(
+  // * first is anything that we want to map from the redux state to props in the component
   mapStateToProps,
-  mapDispatchToProps
+  // * second is any action that we want to dispatch
+  { getContacts }
 )(Contacts);
