@@ -44,7 +44,6 @@ const mapStateToProps = state => ({
 
 // In order to use "connect" we need instead of exporting the component directly we need to explore "connect" (put parentheses) and then wrap the component name in parentheses.
 // Now inside the "connect" parameters we put two things:
-
 export default connect(
   // * first is anything that we want to map from the redux state to props in the component
   mapStateToProps,
