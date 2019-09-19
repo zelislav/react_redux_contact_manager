@@ -1,6 +1,14 @@
 // this is the place where calls to the API will be done
-import { GET_CONTACTS, DELETE_CONTACT, ADD_CONTACT } from "./types";
+import {
+  GET_CONTACTS,
+  DELETE_CONTACT,
+  ADD_CONTACT,
+  GET_CONTACT,
+  UPDATE_CONTACT
+} from "./types";
 import axios from "axios";
+
+// ******************* get - GET_CONTACTS
 
 // "redux-thunk" allow us to call directly "dispatch"
 export const getContacts = () => async dispatch => {
@@ -14,6 +22,21 @@ export const getContacts = () => async dispatch => {
     payload: res.data
   });
 };
+
+// ******************* get - GET_CONTACT
+
+// "id" needed because we're going to send an ID so that we know which contact to grab
+export const getContact = id => async dispatch => {
+  const res = await axios.get(
+    `https://jsonplaceholder.typicode.com/users/${id}`
+  );
+  dispatch({
+    type: GET_CONTACT,
+    payload: res.data
+  });
+};
+
+// ******************* delete - DELETE_CONTACT
 
 // "id" needed because it needs to know which one should be deleted
 export const deleteContact = id => async dispatch => {
@@ -32,6 +55,8 @@ export const deleteContact = id => async dispatch => {
     });
   }
 };
+
+// ******************* post - ADD_CONTACT
 
 // actual object "contact" is a parameter
 export const addContact = contact => async dispatch => {

@@ -1,9 +1,18 @@
-import { GET_CONTACTS, DELETE_CONTACT, ADD_CONTACT } from "../actions/types";
+import {
+  GET_CONTACTS,
+  DELETE_CONTACT,
+  ADD_CONTACT,
+  GET_CONTACT,
+  UPDATE_CONTACT
+} from "../actions/types";
 
 // Each "reducer" has its own "initialState" and it's just going to export a default function
 const initialState = {
   // From "Contacts" component state moved to Redux
-  contacts: []
+  contacts: [],
+  // 'contact' is the part of the state that will represent the current contact that's being viewed, needed for edit page.
+  // It's going to fill that value that object with the 'payload' that we get from the response.
+  contact: {}
 };
 
 export default function(state = initialState, action) {
@@ -17,6 +26,15 @@ export default function(state = initialState, action) {
         // to the initial state it sends along the "payload" which has all the stuff from "jsonplaceholder"
         contacts: action.payload
       };
+
+    case GET_CONTACT:
+      return {
+        // initial state
+        ...state,
+        // state name will be called "contact"
+        contact: action.payload
+      };
+
     case DELETE_CONTACT:
       return {
         // initial state
@@ -28,6 +46,7 @@ export default function(state = initialState, action) {
           contact => contact.id !== action.payload
         )
       };
+
     case ADD_CONTACT:
       return {
         // initial state
@@ -35,6 +54,7 @@ export default function(state = initialState, action) {
         // to the "contacts" array we will add: "payload", so "action.payload" which is the new contact and "initial state contacts" which is "...state.contacts".
         contacts: [action.payload, ...state.contacts]
       };
+
     default:
       return state;
   }

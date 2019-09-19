@@ -1,32 +1,55 @@
-import React, { Component } from 'react';
-import TextInputGroup from '../layout/TextInputGroup';
+import React, { Component } from "react";
+import TextInputGroup from "../layout/TextInputGroup";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { getContact } from "../../actions/contactActions";
 
 class EditContact extends Component {
   state = {
-    name: '',
-    email: '',
-    phone: '',
+    name: "",
+    email: "",
+    phone: "",
     errors: {}
   };
 
-  onSubmit = (e) => {
+  // Taking the props and set them to the state.
+  // Also, "contact/edit/ID" should stay as a controlled component so we need the inputs bound to the state.
+  UNSAFE_componentWillReceiveProps(nextProps, nextState) {
+    // This runs when we fetch "contacts" from the "state" and we bring it in as prop, we map it to a prop this will run and then we can access the "contact" prop inside "nextProps".
+    const { name, email, phone } = nextProps.contact;
+    this.setState({
+      name,
+      email,
+      phone
+    });
+    // So that should update the state and then it should be shown in the form.
+  }
+
+  // We wanna call "getContact" because that's what's going to bring in the single contact so that's going to go inside of "componentDidMount"
+  componentDidMount() {
+    // getting ID from URL
+    const { id } = this.props.match.params;
+    this.props.getContact(id);
+  }
+
+  onSubmit = e => {
     e.preventDefault();
 
     const { name, email, phone } = this.state;
 
     // Check For Errors
-    if (name === '') {
-      this.setState({ errors: { name: 'Name is required' } });
+    if (name === "") {
+      this.setState({ errors: { name: "Name is required" } });
       return;
     }
 
-    if (email === '') {
-      this.setState({ errors: { email: 'Email is required' } });
+    if (email === "") {
+      this.setState({ errors: { email: "Email is required" } });
       return;
     }
 
-    if (phone === '') {
-      this.setState({ errors: { phone: 'Phone is required' } });
+    if (phone === "") {
+      this.setState({ errors: { phone: "Phone is required" } });
       return;
     }
 
@@ -42,13 +65,13 @@ class EditContact extends Component {
 
     // Clear State
     this.setState({
-      name: '',
-      email: '',
-      phone: '',
+      name: "",
+      email: "",
+      phone: "",
       errors: {}
     });
 
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
 
   onChange = e => this.setState({ [e.target.name]: e.target.value });
@@ -98,4 +121,18 @@ class EditContact extends Component {
   }
 }
 
-export default EditContact;
+EditContact.propTypes = {
+  contact: PropTypes.object.isRequired,
+  getContact: PropTypes.func.isRequired
+};
+
+// We want 'mapStateToProps' because we have that "contact" value in our state that we want.
+const mapStateToProps = state => ({
+  // It's coming from the "contactReducer.js" in the "state", but we want the single "contact" object!
+  contact: state.contact.contact
+});
+
+export default connect(
+  mapStateToProps,
+  { getContact }
+)(EditContact);
