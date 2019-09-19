@@ -33,7 +33,6 @@ class AddContact extends Component {
       return;
     }
 
-    // On submit we get a "newContact" but It's not going to create an ID for us because we don't have the backend to do that. So we have to generate it with "uuid" package.
     const newContact = {
       name,
       email,
@@ -105,10 +104,7 @@ AddContact.propTypes = {
   addContact: PropTypes.func.isRequired
 };
 
-// We're not bringing any data from the state.
 export default connect(
-  // "null" for "mapStateToProps"
   null,
-  // action that we want to call is "{ addContact }"
   { addContact }
 )(AddContact);

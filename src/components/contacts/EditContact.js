@@ -12,22 +12,16 @@ class EditContact extends Component {
     errors: {}
   };
 
-  // Taking the props and set them to the state.
-  // Also, "contact/edit/ID" should stay as a controlled component so we need the inputs bound to the state.
   UNSAFE_componentWillReceiveProps(nextProps, nextState) {
-    // This runs when we fetch "contacts" from the "state" and we bring it in as prop, we map it to a prop this will run and then we can access the "contact" prop inside "nextProps".
     const { name, email, phone } = nextProps.contact;
     this.setState({
       name,
       email,
       phone
     });
-    // So that should update the state and then it should be shown in the form.
   }
 
-  // We wanna call "getContact" because that's what's going to bring in the single contact so that's going to go inside of "componentDidMount"
   componentDidMount() {
-    // getting ID from URL
     const { id } = this.props.match.params;
     this.props.getContact(id);
   }
@@ -53,7 +47,6 @@ class EditContact extends Component {
       return;
     }
 
-    // gettting "id" from the url
     const { id } = this.props.match.params;
 
     const updContact = {
@@ -129,9 +122,7 @@ EditContact.propTypes = {
   getContact: PropTypes.func.isRequired
 };
 
-// We want 'mapStateToProps' because we have that "contact" value in our state that we want.
 const mapStateToProps = state => ({
-  // It's coming from the "contactReducer.js" in the "state", but we want the single "contact" object!
   contact: state.contact.contact
 });
 

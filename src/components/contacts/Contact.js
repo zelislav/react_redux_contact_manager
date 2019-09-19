@@ -64,10 +64,7 @@ Contact.propTypes = {
   deleteContact: PropTypes.func.isRequired
 };
 
-// We're not getting any data this time. Just calling an action we're not "mappingStateToProps"
 export default connect(
-  //  so the first parameter is going to be NULL, no maps the props.
   null,
-  //  the second parameter will be "deleteContact" which is brought on top.
   { deleteContact }
 )(Contact);
