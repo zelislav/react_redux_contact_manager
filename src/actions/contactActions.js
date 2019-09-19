@@ -1,4 +1,4 @@
-// this is the place where calls to the API will be done
+// ******************* this is the place where calls to the API will be done
 import {
   GET_CONTACTS,
   DELETE_CONTACT,
@@ -68,6 +68,20 @@ export const addContact = contact => async dispatch => {
     type: ADD_CONTACT,
     // instead of passing "contact" directly we wanna return "res.data"
     // and now we don't need "id" in "newContact" because "jsonplaceholder" will generate "id" for us.
+    payload: res.data
+  });
+};
+
+// ******************* put - UPDATE_CONTACT
+
+// This should be updated version of contact
+export const updateContact = contact => async dispatch => {
+  const res = await axios.put(
+    `https://jsonplaceholder.typicode.com/users/${contact.id}`,
+    contact
+  );
+  dispatch({
+    type: UPDATE_CONTACT,
     payload: res.data
   });
 };

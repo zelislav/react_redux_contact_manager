@@ -55,6 +55,18 @@ export default function(state = initialState, action) {
         contacts: [action.payload, ...state.contacts]
       };
 
+    case UPDATE_CONTACT:
+      return {
+        // initial state
+        ...state,
+        // after mapping through the "state.contacts" array "id" will be checked if matches "contact" will be set to the "newContact" else we don't want to change it
+        contacts: state.contacts.map(contact =>
+          contact.id === action.payload.id
+            ? (contact = action.payload)
+            : contact
+        )
+      };
+
     default:
       return state;
   }
