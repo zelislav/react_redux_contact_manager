@@ -16,17 +16,33 @@ export const getContacts = () => async dispatch => {
 };
 
 // "id" needed because it needs to know which one should be deleted
-export const deleteContact = id => {
-  return {
-    type: DELETE_CONTACT,
-    payload: id
-  };
+export const deleteContact = id => async dispatch => {
+  // Couse is not our backend we will go with try/catch just to App be functional
+  try {
+    // we don't have res in this situation because we don't have any data, with delete we get empty object
+    await axios.delete(`https://jsonplaceholder.typicode.com/users${id}`);
+    dispatch({
+      type: DELETE_CONTACT,
+      payload: id
+    });
+  } catch (e) {
+    dispatch({
+      type: DELETE_CONTACT,
+      payload: id
+    });
+  }
 };
 
 // actual object "contact" is a parameter
-export const addContact = contact => {
-  return {
+export const addContact = contact => async dispatch => {
+  const res = await axios.post(
+    "https://jsonplaceholder.typicode.com/users",
+    contact // passing in the contact
+  );
+  dispatch({
     type: ADD_CONTACT,
-    payload: contact
-  };
+    // instead of passing "contact" directly we wanna return "res.data"
+    // and now we don't need "id" in "newContact" because "jsonplaceholder" will generate "id" for us.
+    payload: res.data
+  });
 };
